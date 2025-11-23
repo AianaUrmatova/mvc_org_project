@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta charset="UTF-8">
+    <title>Student Courses</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f7f7f7;
+        }
+        .course-card:hover {
+            transform: translateY(-5px);
+            transition: 0.3s ease;
+        }
+        .course-img {
+            height: 180px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body class="p-4">
+
+<div class="container">
+    <h2 class="fw-bold" th:text="${student.firstName + ' ' + student.lastName}"></h2>
+    <h5 class="text-muted">Enrolled Courses</h5>
+    <div class="alert alert-warning mt-4" th:if="${courses.size() == 0}">
+        This student is not enrolled in any courses yet.
+    </div>
+    <div class="row g-4 mt-2" th:if="${courses.size() > 0}">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+             th:each="c : ${courses}">
+            <div class="card shadow-sm course-card">
+                <img th:src="${c.imageUrl}" class="course-img" alt="course-img">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold" th:text="${c.title}"></h5>
+                    <p class="card-text text-muted"
+                       th:text="${c.description.length() > 80 ? c.description.substring(0, 80) + '...' : c.description}">
+                    </p>
+                    <p class="card-text text-muted"
+                       th:text="${c.dateOfStart}">
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="/students" class="btn btn-secondary mt-4">Back</a>
+</div>
+</body>
+</html>

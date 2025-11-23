@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Instructors</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body { margin: 0; padding: 0; background: #f5f7fa; }
+        .sidebar {
+            height: 100vh;
+            width: 240px;
+            background: #1f2937;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 40px;
+        }
+
+        .sidebar a {
+            display: block;
+            padding: 14px 25px;
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .sidebar a:hover {
+            background: #374151;
+            color: white;
+        }
+
+        .content {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .instructor-card {
+            border-radius: 14px;
+            overflow: hidden;
+            transition: 0.2s ease;
+            background: white;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .instructor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0px 8px 18px rgba(0,0,0,0.15);
+        }
+
+        .card-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: 0.2s ease;
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        .action-btn:hover {
+            background: #007bff;
+            color: white;
+        }
+
+        .instructor-info { padding: 15px; }
+        .name { font-size: 20px; font-weight: 600; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <a href="/courses">📘 Courses</a>
+    <a href="/students">👨‍🎓 Students</a>
+    <a href="/instructors">🧑‍ Instructors</a>
+    <a href="/lessons">📚 Lessons</a>
+</div>
+
+<div class="content">
+
+    <a href="/instructors/new" class="btn btn-primary btn-lg float-end">
+        Create Instructor
+    </a>
+
+    <h2 class="mb-4">All Instructors</h2>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+             th:each="inst : ${allInstructors}">
+
+            <div class="instructor-card">
+
+                <div class="card-actions">
+                    <a th:href="@{'/instructors/' + ${inst.id}}" class="action-btn">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+
+                    <a th:href="@{'/instructors/' + ${inst.id} + '/delete'}"
+                       onclick="return confirm('Бул инструкторду чын эле өчүрөсүңбү?')"
+                       class="action-btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+
+                <div class="instructor-info">
+
+                    <div class="name" th:text="${inst.firstName + ' ' + inst.lastName}"></div>
+
+                    <div class="text-muted" th:text="${inst.email}"></div>
+                    <div class="text-muted" th:text="'+996'+${inst.phoneNumber}"></div>
+
+
+                    <button class="btn btn-outline-primary btn-sm mt-3 w-100"
+                            data-bs-toggle="collapse"
+                            th:data-bs-target="${'#courses-' + inst.id}">
+                        Courses ▼
+                    </button>
+
+                    <div class="collapse mt-2 small"
+                         th:id="${'courses-' + inst.id}">
+
+                        <div th:if="${#lists.isEmpty(inst.courses)}"
+                             class="text-muted">
+                            No courses yet
+                        </div>
+
+                        <ul class="ps-3" th:each="c : ${inst.courses}">
+                            <li th:text="${c.title}"></li>
+                        </ul>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

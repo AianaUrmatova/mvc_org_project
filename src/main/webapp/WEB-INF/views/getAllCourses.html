@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Courses</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body { margin: 0; padding: 0; background: #f5f7fa; }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            height: 100vh;
+            width: 240px;
+            background: #1f2937;
+            position: fixed;
+            left: 0;
+            top: 0;
+            padding-top: 40px;
+        }
+        .sidebar a {
+            display: block;
+            padding: 14px 25px;
+            color: #d1d5db;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .sidebar a:hover {
+            background: #374151;
+            color: white;
+        }
+
+        /* === CONTENT === */
+        .content {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        .course-card {
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            position: relative;
+            transition: 0.2s;
+        }
+        .course-card:hover { transform: translateY(-5px); }
+        .course-img { width: 100%; height: 180px; object-fit: cover; }
+        .card-actions {
+            position: absolute; top: 10px; right: 10px;
+            display: flex; gap: 8px; z-index: 10;
+        }
+        .action-btn {
+            width: 36px; height: 36px; background: white;
+            border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .action-btn:hover { background: #007bff; color: white; }
+    </style>
+</head>
+
+<body >
+
+<div class="sidebar">
+    <a href="/courses">📘 Courses</a>
+    <a href="/students">👨‍🎓 Students</a>
+    <a href="/instructors">🧑‍ Instructors</a>
+    <a href="/lessons">📚 Lessons</a>
+</div>
+
+<div class="content">
+
+    <a href="/courses/new" class="btn btn-primary btn-lg float-end">
+        Create New Course
+    </a>
+
+    <h2 class="mb-4">All Courses</h2>
+
+    <div class="row g-4">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3"
+             th:each="course : ${allCourses}">
+
+            <div class="course-card">
+                <div class="card-actions">
+                    <a th:href="@{'/courses/' + ${course.id}}" class="action-btn">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+
+                    <a th:href="@{'/courses/' + ${course.id} + '/delete'}"
+                       onclick="return confirm('Бул курсту чын эле өчүрөсүңбү?')"
+                       class="action-btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+
+                    <button class="action-btn"
+                            data-bs-toggle="modal"
+                            th:data-bs-target="${'#assignModal-' + course.id}">
+                        <i class="fa-solid fa-user-plus"></i>
+                    </button>
+                </div>
+
+                <img th:src="${course.imageUrl}" class="course-img">
+
+                <div class="p-3">
+                    <div class="d-flex justify-content-between">
+                        <div class="fw-bold" th:text="${course.title}"></div>
+                        <div class="text-muted small" th:text="${course.dateOfStart}"></div>
+                    </div>
+                    <div class="text-secondary mt-1"
+                         th:text="${course.description}"></div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <a th:href="@{'/courses/' + ${course.id} + '/details'}"
+                           class="btn btn-outline-primary btn-sm px-3">
+                            Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Assign -->
+            <div class="modal fade"
+                 th:id="${'assignModal-' + course.id}">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <form th:action="@{'/courses/' + ${course.id} + '/assign'}" method="post">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Assign Instructor</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+
+                                <label>Select Instructor</label>
+                                <select name="instructorId" class="form-control">
+                                    <option th:each="ins : ${allInstructors}"
+                                            th:value="${ins.id}"
+                                            th:text="${ins.firstName + ' ' + ins.lastName}">
+                                    </option>
+                                </select>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button class="btn btn-primary">Assign</button>
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

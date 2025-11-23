@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lessons</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body { margin: 0; padding: 0; background: #f5f7fa; }
+
+        .sidebar {
+            height: 100vh;
+            width: 240px;
+            background: #1f2937;
+            position: fixed;
+            top: 0; left: 0;
+            padding-top: 40px;
+        }
+        .sidebar a {
+            display:block;
+            padding:14px 25px;
+            color:#d1d5db;
+            text-decoration:none;
+            font-size:18px;
+        }
+        .sidebar a:hover { background:#374151; color:white; }
+
+        .content {
+            margin-left:240px;
+            padding:25px;
+        }
+
+        .lesson-card {
+            border-radius:14px;
+            background:white;
+            padding:20px;
+            box-shadow:0px 4px 12px rgba(0,0,0,0.1);
+            transition:0.2s;
+            position:relative;
+        }
+        .lesson-card:hover { transform:translateY(-4px); }
+
+        .card-actions {
+            position:absolute;
+            top:10px;
+            right:10px;
+            display:flex;
+            gap:10px;
+        }
+
+        .action-btn {
+            width:32px; height:32px;
+            background:white;
+            border-radius:50%;
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:#007bff;
+            box-shadow:0 2px 6px rgba(0,0,0,0.15);
+            cursor:pointer;
+        }
+        .action-btn:hover { background:#007bff; color:white; }
+
+    </style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <a href="/courses">📘 Courses</a>
+    <a href="/students">👨‍🎓 Students</a>
+    <a href="/instructors">🧑‍ Instructors</a>
+    <a href="/lessons">📚 Lessons</a>
+</div>
+
+<div class="content">
+
+    <a href="/lessons/new" class="btn btn-primary btn-lg float-end">
+        Create Lesson
+    </a>
+
+    <h2 class="mb-4">All Lessons</h2>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-sm-6 col-md-4"
+             th:each="lesson : ${lessons}">
+
+            <div class="lesson-card">
+
+                <div class="card-actions">
+                    <a th:href="@{'/lessons/' + ${lesson.id}}" class="action-btn">
+                        <i class="fa-solid fa-pen"></i>
+                    </a>
+
+                    <a th:href="@{'/lessons/' + ${lesson.id} + '/delete'}"
+                       onclick="return confirm('Бул сабакты өчүрөсүңбү?')"
+                       class="action-btn">
+                        <i class="fa-solid fa-trash"></i>
+                    </a>
+                </div>
+
+                <h5 class="fw-bold" th:text="${lesson.title}"></h5>
+
+                <div class="text-muted" th:text="${lesson.publisherDate}"></div>
+
+                <p class="mt-2 text-muted"
+                   th:text="${lesson.description}">
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
