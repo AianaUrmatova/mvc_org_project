@@ -19,10 +19,9 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/courses")
 @RequiredArgsConstructor
-
 public class CourseController {
     private final CourseService courseService;
-    private final InstructorService instructorService;
+    private  final InstructorService instructorService;
 
     @GetMapping()
     public String getAllCourses(Model model) {
@@ -101,7 +100,6 @@ public class CourseController {
         courseService.assignInstructor(courseId, instructorId);
         return "redirect:/courses";
     }
-
     @GetMapping("/{id}/details")
     public String courseDetails(@PathVariable("id") Long id, Model model) {
         Course course = courseService.getCourseById(id);

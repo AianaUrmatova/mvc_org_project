@@ -8,7 +8,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
-
 @Entity
 @Table(name = "courses")
 @NoArgsConstructor
@@ -26,14 +25,14 @@ public class Course {
     String description;
     String imageUrl;
     @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
-    Set<Lession> lessons = new HashSet<>();
+    Set<Lesson> lessons = new HashSet<>();
     @ManyToMany
     @JoinTable(
             name = "course_student",
             joinColumns = @JoinColumn(name = "course_id"),
             inverseJoinColumns = @JoinColumn(name = "student_id")
     )
-    Set<Student> students = new HashSet<>();
+    Set <Student> students = new HashSet<>();
     @ManyToMany
     @JoinTable(
             name = "course_instructor",
@@ -48,5 +47,6 @@ public class Course {
         this.description = description;
         this.imageUrl = imageUrl;
     }
+
 
 }

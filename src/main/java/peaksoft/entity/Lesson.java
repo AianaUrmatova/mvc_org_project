@@ -14,8 +14,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Lession {
-
+public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -27,7 +26,7 @@ public class Lession {
     @JoinColumn(name = "course_id")
     Course course;
 
-    public Lession(String title, LocalDate publisherDate, String description) {
+    public Lesson(String title, LocalDate publisherDate, String description) {
         this.title = title;
         this.publisherDate = publisherDate;
         this.description = description;

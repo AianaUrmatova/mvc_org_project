@@ -10,7 +10,6 @@ import peaksoft.service.InstructorService;
 @Controller
 @RequestMapping("/instructors")
 @RequiredArgsConstructor
-
 public class InstructorController {
     private final InstructorService instructorService;
 

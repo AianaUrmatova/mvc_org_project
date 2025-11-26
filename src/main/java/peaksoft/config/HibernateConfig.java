@@ -22,8 +22,6 @@ import java.util.Properties;
 @EnableTransactionManagement
 @ComponentScan("peaksoft")
 @PropertySource("classpath:application.properties")
-
-
 public class HibernateConfig {
     private final Environment environment;
 
@@ -40,7 +38,6 @@ public class HibernateConfig {
         dataSource.setPassword(environment.getProperty("database.pass"));
         return dataSource;
     }
-
     public Properties getHibernateProperties() {
         Properties properties = new Properties();
         properties.put("hibernate.show_sql", "true");
@@ -58,7 +55,7 @@ public class HibernateConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactoryBean.setDataSource(dataSource);
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
-        entityManagerFactoryBean.setPackagesToScan(environment.getProperty("package.toScan"));
+        entityManagerFactoryBean.setPackagesToScan("peaksoft.entity");
         entityManagerFactoryBean.setJpaProperties(getHibernateProperties());
         entityManagerFactoryBean.afterPropertiesSet();
         return entityManagerFactoryBean.getObject();
@@ -80,5 +77,4 @@ public class HibernateConfig {
     public EntityManager makeEntityManager(EntityManagerFactory entityManagerFactory) {
         return entityManagerFactory.createEntityManager();
     }
-
-  }
+}
